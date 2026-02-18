@@ -1,0 +1,312 @@
+.fg-form {
+  max-width: 700px;
+  margin: 0 auto;
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif);
+}
+
+.fg-title {
+  font-family: var(--font-display, 'DM Serif Display', Georgia, serif);
+  margin: 0 0 var(--space-xs, 4px);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--color-text, #e8e4df);
+  letter-spacing: -0.01em;
+}
+
+.fg-description {
+  margin: 0 0 var(--space-lg, 20px);
+  color: var(--color-text-muted, #8a867f);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ─── Field wrapper ─── */
+.fg-field {
+  margin-bottom: var(--space-lg, 20px);
+  animation: fg-fieldIn 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fg-fieldIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered entrance — first 8 fields get progressive delays */
+.fg-field:nth-child(1) { animation-delay: 40ms; }
+.fg-field:nth-child(2) { animation-delay: 80ms; }
+.fg-field:nth-child(3) { animation-delay: 120ms; }
+.fg-field:nth-child(4) { animation-delay: 160ms; }
+.fg-field:nth-child(5) { animation-delay: 200ms; }
+.fg-field:nth-child(6) { animation-delay: 240ms; }
+.fg-field:nth-child(7) { animation-delay: 280ms; }
+.fg-field:nth-child(8) { animation-delay: 320ms; }
+
+.fg-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 0.82rem;
+  color: var(--color-text-muted, #8a867f);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fg-required {
+  color: var(--color-accent, #d4a053);
+  margin-left: 3px;
+  font-weight: 400;
+}
+
+/* ─── Inputs ─── */
+.fg-input,
+.fg-textarea,
+.fg-select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.9rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  background: var(--color-surface-raised, #1e1e27);
+  color: var(--color-text, #e8e4df);
+  transition:
+    border-color 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fg-input::placeholder,
+.fg-textarea::placeholder {
+  color: var(--color-text-dim, #5c5952);
+}
+
+.fg-input:hover,
+.fg-textarea:hover,
+.fg-select:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.fg-input:focus,
+.fg-textarea:focus,
+.fg-select:focus {
+  outline: none;
+  border-color: var(--color-accent, #d4a053);
+  box-shadow: 0 0 0 3px var(--color-accent-glow, rgba(212, 160, 83, 0.15));
+  background: rgba(30, 30, 39, 0.8);
+}
+
+.fg-input:disabled,
+.fg-textarea:disabled,
+.fg-select:disabled {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--color-text-dim, #5c5952);
+  border-color: rgba(255, 255, 255, 0.04);
+  cursor: not-allowed;
+}
+
+.fg-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238a867f' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.fg-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* ─── Help & error text ─── */
+.fg-help {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  color: var(--color-text-dim, #5c5952);
+  font-weight: 300;
+}
+
+.fg-error {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  color: var(--color-error, #d94f4f);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fg-error::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-error, #d94f4f);
+  flex-shrink: 0;
+}
+
+/* ─── Checkbox ─── */
+.fg-field--checkbox {
+  display: flex;
+  flex-direction: column;
+}
+
+.fg-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 400;
+  cursor: pointer;
+  color: var(--color-text, #e8e4df);
+  font-size: 0.9rem;
+  transition: color 200ms ease;
+}
+
+.fg-checkbox-label:hover {
+  color: var(--color-accent, #d4a053);
+}
+
+.fg-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-accent, #d4a053);
+  cursor: pointer;
+}
+
+/* ─── Radio ─── */
+.fg-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.fg-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 400;
+  cursor: pointer;
+  color: var(--color-text, #e8e4df);
+  font-size: 0.9rem;
+  padding: 6px 10px;
+  margin: 0 -10px;
+  border-radius: var(--radius-sm, 6px);
+  transition:
+    background 200ms ease,
+    color 200ms ease;
+}
+
+.fg-radio-label:hover {
+  background: var(--color-surface-overlay, rgba(255, 255, 255, 0.03));
+  color: var(--color-accent, #d4a053);
+}
+
+.fg-radio {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-accent, #d4a053);
+  cursor: pointer;
+}
+
+/* ─── Group layout ─── */
+.fg-group {
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-md, 10px);
+  padding: var(--space-lg, 20px) var(--space-lg, 20px);
+  margin-bottom: var(--space-lg, 20px);
+  background: var(--color-surface-overlay, rgba(255, 255, 255, 0.03));
+  position: relative;
+}
+
+.fg-group-title {
+  font-family: var(--font-display, 'DM Serif Display', Georgia, serif);
+  font-weight: 400;
+  font-size: 1.1rem;
+  padding: 0 8px;
+  color: var(--color-text, #e8e4df);
+}
+
+.fg-group-description {
+  margin: 0 0 var(--space-md, 16px);
+  color: var(--color-text-muted, #8a867f);
+  font-size: 0.82rem;
+  font-weight: 300;
+}
+
+/* ─── Column layout ─── */
+.fg-columns {
+  display: flex;
+  gap: var(--space-md, 16px);
+  margin-bottom: var(--space-xs, 4px);
+}
+
+.fg-column {
+  min-width: 0;
+}
+
+/* ─── Submit button ─── */
+.fg-submit {
+  position: relative;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--color-accent, #d4a053) 0%, #c08a3a 100%);
+  color: #0f0f13;
+  border: none;
+  border-radius: var(--radius-sm, 6px);
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: var(--space-lg, 24px);
+  transition:
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 200ms ease;
+  box-shadow: 0 2px 12px rgba(212, 160, 83, 0.2);
+  overflow: hidden;
+}
+
+.fg-submit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.fg-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(212, 160, 83, 0.35);
+}
+
+.fg-submit:hover::after {
+  opacity: 1;
+}
+
+.fg-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 8px rgba(212, 160, 83, 0.2);
+}
