@@ -4,6 +4,10 @@ import { basicSchema } from './demo/schemas/basicSchema';
 import { complexSchema } from './demo/schemas/complexSchema';
 import { customComponentsSchema } from './demo/schemas/customComponentsSchema';
 import { dependenciesSchema } from './demo/schemas/dependenciesSchema';
+import { dynamicOptionsSchema, dynamicOptionLoaders } from './demo/schemas/dynamicOptionsSchema';
+import { controlledSchema } from './demo/schemas/controlledSchema';
+import ControlledDemo from './demo/ControlledDemo';
+import EventHookDemo from './demo/EventHookDemo';
 import StarRating from './demo/customComponents/StarRating';
 import FileUploader from './demo/customComponents/FileUploader';
 import './App.css';
@@ -13,6 +17,9 @@ const TABS = [
   { id: 'complex', label: 'Complex', schema: complexSchema },
   { id: 'custom', label: 'Custom Components', schema: customComponentsSchema },
   { id: 'deps', label: 'Dependencies', schema: dependenciesSchema },
+  { id: 'dynamic', label: 'Dynamic Options', schema: dynamicOptionsSchema },
+  { id: 'controlled', label: 'Controlled', schema: controlledSchema },
+  { id: 'events', label: 'Event Hooks' },
 ];
 
 const customComponents = {
@@ -56,13 +63,24 @@ export default function App() {
       </nav>
 
       <div className="form-container">
-        <FormGenerator
-          key={activeTab}
-          schema={currentTab.schema}
-          onSubmit={handleSubmit}
-          customComponents={activeTab === 'custom' ? customComponents : {}}
-          customValidation={activeTab === 'custom' ? customValidation : {}}
-        />
+        {activeTab === 'events' ? (
+          <EventHookDemo key={activeTab} onSubmit={handleSubmit} />
+        ) : activeTab === 'controlled' ? (
+          <ControlledDemo
+            key={activeTab}
+            schema={currentTab.schema}
+            onSubmit={handleSubmit}
+          />
+        ) : (
+          <FormGenerator
+            key={activeTab}
+            schema={currentTab.schema}
+            onSubmit={handleSubmit}
+            customComponents={activeTab === 'custom' ? customComponents : {}}
+            customValidation={activeTab === 'custom' ? customValidation : {}}
+            optionLoaders={activeTab === 'dynamic' ? dynamicOptionLoaders : {}}
+          />
+        )}
       </div>
 
       {submittedData && (

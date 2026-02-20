@@ -1,8 +1,10 @@
 import { useFormContext, Controller } from 'react-hook-form';
+import { useFieldChangeEmitter } from '../../hooks/useFieldChangeEmitter';
 
 export default function DateField({ component, isRequired, isDisabled }) {
   const { control } = useFormContext();
   const { name, label, helpText } = component;
+  const { wrapOnChange } = useFieldChangeEmitter(name);
 
   return (
     <Controller
@@ -18,6 +20,7 @@ export default function DateField({ component, isRequired, isDisabled }) {
           )}
           <input
             {...field}
+            onChange={wrapOnChange(field.onChange)}
             id={name}
             type="date"
             disabled={isDisabled}

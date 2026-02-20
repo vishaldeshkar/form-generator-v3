@@ -1,10 +1,12 @@
 import { useFormContext, Controller } from 'react-hook-form';
-import { normalizeOptions } from '../../utils/normalizeOptions';
+import { useDynamicOptions } from '../../hooks/useDynamicOptions';
+import { useFieldChangeEmitter } from '../../hooks/useFieldChangeEmitter';
 
 export default function SelectField({ component, isRequired, isDisabled }) {
   const { control } = useFormContext();
-  const { name, label, placeholder, helpText, options } = component;
-  const normalizedOptions = normalizeOptions(options);
+  const { name, label, placeholder, helpText } = component;
+  const { wrapOnChange } = useFieldChangeEmitter(name);
+  const { normalizedOptions, loading, error: fetchError } = useDynamicOptions(component);
 
   return (
     <Controller
@@ -20,12 +22,13 @@ export default function SelectField({ component, isRequired, isDisabled }) {
           )}
           <select
             {...field}
+            onChange={wrapOnChange(field.onChange)}
             id={name}
-            disabled={isDisabled}
+            disabled={isDisabled || loading}
             className="fg-select"
             value={field.value ?? ''}
           >
-            <option value="">{placeholder || 'Select...'}</option>
+            <option value="">{loading ? 'Loading...' : placeholder || 'Select...'}</option>
             {normalizedOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}
@@ -33,6 +36,7 @@ export default function SelectField({ component, isRequired, isDisabled }) {
             ))}
           </select>
           {helpText && <p className="fg-help">{helpText}</p>}
+          {fetchError && <p className="fg-error">{fetchError}</p>}
           {error && <p className="fg-error">{error.message}</p>}
         </div>
       )}

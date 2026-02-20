@@ -1,9 +1,11 @@
 import { useFormContext, Controller } from 'react-hook-form';
 import { normalizeOptions } from '../../utils/normalizeOptions';
+import { useFormGeneratorContext } from '../../context/FormGeneratorContext';
 
 export default function RadioField({ component, isRequired, isDisabled }) {
   const { control } = useFormContext();
   const { name, label, helpText, options } = component;
+  const { emitFieldChange } = useFormGeneratorContext();
   const normalizedOptions = normalizeOptions(options);
 
   return (
@@ -26,7 +28,10 @@ export default function RadioField({ component, isRequired, isDisabled }) {
                   name={name}
                   value={opt.value}
                   checked={field.value === opt.value}
-                  onChange={() => field.onChange(opt.value)}
+                  onChange={() => {
+                    field.onChange(opt.value);
+                    if (emitFieldChange) emitFieldChange(name, opt.value);
+                  }}
                   onBlur={field.onBlur}
                   disabled={isDisabled}
                   className="fg-radio"

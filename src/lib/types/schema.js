@@ -44,7 +44,7 @@
  * @typedef {BaseComponent & { type: 'textarea', rows?: number }} TextareaComponent
  * @typedef {BaseComponent & { type: 'checkbox' }} CheckboxComponent
  * @typedef {BaseComponent & { type: 'radio', options: (string|OptionItem)[] }} RadioComponent
- * @typedef {BaseComponent & { type: 'select', options: (string|OptionItem)[] }} SelectComponent
+ * @typedef {BaseComponent & { type: 'select', options?: (string|OptionItem)[], optionsDependsOn?: string }} SelectComponent
  * @typedef {BaseComponent & { type: 'date' }} DateComponent
  * @typedef {{ type: 'group', name: string, title?: string, description?: string, components: FormComponent[], dependencies?: Dependencies }} GroupComponent
  * @typedef {{ type: 'column', name: string, columns: { width: number, components: FormComponent[] }[], dependencies?: Dependencies }} ColumnComponent
@@ -69,12 +69,23 @@
  *
  * @typedef {Object.<string, React.ComponentType<CustomComponentProps>>} CustomComponentMap
  *
+ * @typedef {Object.<string, (dependentValue?: *) => Promise<(string|OptionItem)[]>>} OptionLoaderMap
+ *
  * @typedef {Object} FormGeneratorProps
  * @property {FormSchema} schema
  * @property {(data: Object) => void} onSubmit
  * @property {CustomComponentMap} [customComponents]
  * @property {Object.<string, (value: *, values: Object) => string|undefined>} [customValidation]
  * @property {Object} [defaultValues]
+ * @property {OptionLoaderMap} [optionLoaders]
+ *
+ * @typedef {Object} FormGeneratorRef
+ * @property {(event: 'fieldChange', callback: (fieldId: string, value: *) => void) => () => void} on - Register event listener, returns unsubscribe function
+ * @property {(event: 'fieldChange', callback: Function) => void} off - Remove event listener
+ * @property {(fieldName: string, options: (string|OptionItem)[]) => void} setFieldOptions - Set options for a select field imperatively
+ * @property {(fieldName: string, options?: Object) => void} resetField - Reset a field's value
+ * @property {(fieldName: string, value: *, options?: Object) => void} setValue - Set a field's value
+ * @property {(fieldName?: string) => *} getValues - Get field value(s)
  */
 
 export {};

@@ -1,8 +1,10 @@
 import { useFormContext, Controller } from 'react-hook-form';
+import { useFormGeneratorContext } from '../../context/FormGeneratorContext';
 
 export default function CheckboxField({ component, isRequired, isDisabled }) {
   const { control } = useFormContext();
   const { name, label, helpText } = component;
+  const { emitFieldChange } = useFormGeneratorContext();
 
   return (
     <Controller
@@ -14,7 +16,11 @@ export default function CheckboxField({ component, isRequired, isDisabled }) {
             <input
               type="checkbox"
               checked={!!field.value}
-              onChange={(e) => field.onChange(e.target.checked)}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                field.onChange(checked);
+                if (emitFieldChange) emitFieldChange(name, checked);
+              }}
               onBlur={field.onBlur}
               disabled={isDisabled}
               className="fg-checkbox"

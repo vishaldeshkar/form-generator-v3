@@ -1,8 +1,10 @@
 import { useFormContext, Controller } from 'react-hook-form';
+import { useFieldChangeEmitter } from '../../hooks/useFieldChangeEmitter';
 
 export default function TextareaField({ component, isRequired, isDisabled }) {
   const { control } = useFormContext();
   const { name, label, placeholder, helpText, rows = 4 } = component;
+  const { wrapOnChange } = useFieldChangeEmitter(name);
 
   return (
     <Controller
@@ -18,6 +20,7 @@ export default function TextareaField({ component, isRequired, isDisabled }) {
           )}
           <textarea
             {...field}
+            onChange={wrapOnChange(field.onChange)}
             id={name}
             rows={rows}
             placeholder={placeholder}
