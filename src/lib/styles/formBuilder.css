@@ -1,0 +1,781 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Form Builder & Composer Styles (fbc- prefix)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ─── FormComposer layout ──────────────────────────────────────────── */
+
+.fbc-composer {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  gap: 0;
+  height: calc(100vh - 120px);
+  min-height: 500px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.fbc-builder-panel {
+  overflow-y: auto;
+  padding: var(--space-lg);
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.fbc-preview-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+/* ─── Schema Meta Editor ───────────────────────────────────────────── */
+
+.fbc-meta-editor {
+  margin-bottom: var(--space-lg);
+}
+
+.fbc-meta-title {
+  display: block;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.3;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.fbc-meta-title:hover,
+.fbc-meta-title:focus {
+  border-color: var(--color-border);
+  outline: none;
+}
+
+.fbc-meta-title:focus {
+  border-color: var(--color-accent);
+}
+
+.fbc-meta-description {
+  display: block;
+  width: 100%;
+  padding: var(--space-xs) var(--space-md);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.fbc-meta-description:hover,
+.fbc-meta-description:focus {
+  border-color: var(--color-border);
+  outline: none;
+}
+
+.fbc-meta-description:focus {
+  border-color: var(--color-accent);
+}
+
+/* ─── Field Palette ────────────────────────────────────────────────── */
+
+.fbc-palette {
+  margin-bottom: var(--space-lg);
+}
+
+.fbc-palette-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-sm);
+}
+
+.fbc-palette-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.fbc-palette-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 4px 10px;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  white-space: nowrap;
+}
+
+.fbc-palette-btn:hover {
+  background: var(--color-accent-glow);
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+.fbc-palette-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.fbc-palette-label {
+  font-size: 0.7rem;
+}
+
+/* ─── Builder Canvas ───────────────────────────────────────────────── */
+
+.fbc-canvas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.fbc-canvas--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+}
+
+/* ─── Field Card ───────────────────────────────────────────────────── */
+
+.fbc-field-card {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.fbc-field-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.fbc-field-card--selected {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent), var(--shadow-glow);
+}
+
+.fbc-field-card--dragging {
+  opacity: 0.4;
+}
+
+.fbc-field-card--drag-over {
+  border-top: 2px solid var(--color-accent);
+}
+
+.fbc-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+  user-select: none;
+}
+
+.fbc-drag-handle {
+  cursor: grab;
+  color: var(--color-text-dim);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.fbc-drag-handle:active {
+  cursor: grabbing;
+}
+
+.fbc-type-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: var(--color-surface-overlay);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-accent);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.fbc-type-badge--large {
+  width: auto;
+  padding: 2px 8px;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fbc-card-name {
+  font-size: 0.82rem;
+  color: var(--color-text);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fbc-card-field-name {
+  font-size: 0.68rem;
+  color: var(--color-text-dim);
+  font-family: monospace;
+}
+
+.fbc-card-actions {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.fbc-field-card:hover .fbc-card-actions {
+  display: flex;
+}
+
+.fbc-card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--color-text-dim);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.fbc-card-btn:hover {
+  background: var(--color-surface-overlay);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.fbc-card-btn--delete:hover {
+  color: var(--color-error);
+  border-color: var(--color-error);
+  background: var(--color-error-bg);
+}
+
+.fbc-card-btn--confirm {
+  width: auto;
+  padding: 0 6px;
+  font-size: 0.65rem;
+  color: var(--color-error);
+  border-color: var(--color-error);
+  background: var(--color-error-bg);
+}
+
+/* ─── Nested fields (groups & columns) ─────────────────────────────── */
+
+.fbc-card-nested {
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+  padding-left: var(--space-xl);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.fbc-card-columns {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.fbc-card-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.fbc-column-header {
+  padding-bottom: var(--space-xs);
+}
+
+.fbc-column-label {
+  font-size: 0.65rem;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fbc-card-add-field {
+  padding-top: var(--space-xs);
+}
+
+.fbc-add-field-btn {
+  display: block;
+  width: 100%;
+  padding: 4px;
+  background: transparent;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-dim);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.fbc-add-field-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ─── Field Editor Panel ───────────────────────────────────────────── */
+
+.fbc-editor-panel {
+  position: fixed;
+  top: 50%;
+  right: var(--space-lg);
+  transform: translateY(-50%);
+  width: 320px;
+  max-height: 80vh;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  overflow-y: auto;
+  z-index: 100;
+  animation: fbc-slideIn var(--duration-normal) var(--ease-out);
+}
+
+@keyframes fbc-slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+.fbc-editor-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  z-index: 1;
+}
+
+.fbc-editor-title {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fbc-editor-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-dim);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.fbc-editor-close:hover {
+  background: var(--color-error-bg);
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+.fbc-editor-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.fbc-editor-tab {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-dim);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.fbc-editor-tab:hover {
+  color: var(--color-text-muted);
+}
+
+.fbc-editor-tab--active {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+.fbc-editor-body {
+  padding: var(--space-md);
+}
+
+/* ─── Form rows (used in all editors) ──────────────────────────────── */
+
+.fbc-form-row {
+  margin-bottom: var(--space-md);
+}
+
+.fbc-form-row--inline {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.fbc-form-label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-dim);
+}
+
+.fbc-form-input {
+  display: block;
+  width: 100%;
+  padding: 6px 10px;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-family: inherit;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.fbc-form-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent-glow);
+}
+
+.fbc-form-input::placeholder {
+  color: var(--color-text-dim);
+}
+
+.fbc-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.fbc-toggle-label input[type="checkbox"] {
+  accent-color: var(--color-accent);
+}
+
+/* ─── Options Editor ───────────────────────────────────────────────── */
+
+.fbc-editor-section-title {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-sm);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.fbc-option-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.fbc-option-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.fbc-add-option-btn {
+  display: block;
+  width: 100%;
+  padding: 4px;
+  margin-top: var(--space-sm);
+  background: transparent;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-dim);
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.fbc-add-option-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ─── Layout Editors ───────────────────────────────────────────────── */
+
+.fbc-layout-editor {
+  margin-top: var(--space-sm);
+}
+
+.fbc-column-summary {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.fbc-warning-text {
+  color: var(--color-error);
+}
+
+.fbc-column-config-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.fbc-column-config-label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  min-width: 60px;
+}
+
+.fbc-column-width-select {
+  width: auto;
+  flex: 1;
+}
+
+/* ─── Dependency Editor ────────────────────────────────────────────── */
+
+.fbc-dependency-editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.fbc-dep-section {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.fbc-dep-header {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-surface-raised);
+}
+
+.fbc-dep-body {
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+}
+
+.fbc-dep-description {
+  font-size: 0.72rem;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-sm);
+}
+
+.fbc-logic-toggle {
+  display: inline-flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: var(--space-sm);
+}
+
+.fbc-logic-btn {
+  padding: 2px 12px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-dim);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.fbc-logic-btn--active {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.fbc-dep-condition-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.fbc-dep-field-select {
+  flex: 2;
+  min-width: 0;
+}
+
+.fbc-dep-op-select {
+  width: 70px;
+  flex-shrink: 0;
+}
+
+.fbc-dep-value-input {
+  flex: 1.5;
+  min-width: 0;
+}
+
+/* ─── Preview Panel ────────────────────────────────────────────────── */
+
+.fbc-preview-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.fbc-preview-tab {
+  flex: 1;
+  padding: var(--space-md);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-dim);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.fbc-preview-tab:hover {
+  color: var(--color-text-muted);
+}
+
+.fbc-preview-tab--active {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+.fbc-preview-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-lg);
+}
+
+.fbc-preview-form {
+  max-width: 100%;
+}
+
+.fbc-preview-form .fg-form {
+  max-width: 100%;
+}
+
+/* ─── JSON View ────────────────────────────────────────────────────── */
+
+.fbc-json-view {
+  position: relative;
+}
+
+.fbc-json-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-sm);
+}
+
+.fbc-copy-btn {
+  padding: 4px 12px;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.fbc-copy-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.fbc-json-pre {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  overflow-x: auto;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  tab-size: 2;
+}
+
+/* JSON syntax highlighting */
+.fbc-json-key { color: var(--color-accent); }
+.fbc-json-string { color: var(--color-success); }
+.fbc-json-number { color: #79b8ff; }
+.fbc-json-bool { color: #ff7b72; }
+.fbc-json-null { color: var(--color-text-dim); }
+
+/* ─── Icon alignment (lucide-react) ────────────────────────────────── */
+
+.fbc-palette-btn,
+.fbc-add-field-btn,
+.fbc-add-option-btn,
+.fbc-copy-btn,
+.fbc-preview-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+.fbc-palette-icon {
+  display: flex;
+  align-items: center;
+}
+
+/* ─── Empty state ──────────────────────────────────────────────────── */
+
+.fbc-empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl);
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+  text-align: center;
+}
