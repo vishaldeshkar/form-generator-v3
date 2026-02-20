@@ -8,6 +8,7 @@ import { dynamicOptionsSchema, dynamicOptionLoaders } from './demo/schemas/dynam
 import { controlledSchema } from './demo/schemas/controlledSchema';
 import ControlledDemo from './demo/ControlledDemo';
 import EventHookDemo from './demo/EventHookDemo';
+import FormBuilderDemo from './demo/FormBuilderDemo';
 import StarRating from './demo/customComponents/StarRating';
 import FileUploader from './demo/customComponents/FileUploader';
 import './App.css';
@@ -20,6 +21,7 @@ const TABS = [
   { id: 'dynamic', label: 'Dynamic Options', schema: dynamicOptionsSchema },
   { id: 'controlled', label: 'Controlled', schema: controlledSchema },
   { id: 'events', label: 'Event Hooks' },
+  { id: 'builder', label: 'Form Builder' },
 ];
 
 const customComponents = {
@@ -63,7 +65,9 @@ export default function App() {
       </nav>
 
       <div className="form-container">
-        {activeTab === 'events' ? (
+        {activeTab === 'builder' ? (
+          <FormBuilderDemo key={activeTab} />
+        ) : activeTab === 'events' ? (
           <EventHookDemo key={activeTab} onSubmit={handleSubmit} />
         ) : activeTab === 'controlled' ? (
           <ControlledDemo
