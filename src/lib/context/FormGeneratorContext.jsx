@@ -5,6 +5,7 @@ const FormGeneratorContext = createContext({
   optionLoaders: {},
   imperativeOptions: {},
   emitFieldChange: null,
+  disabledFields: [],
 });
 
 export function FormGeneratorProvider({
@@ -12,11 +13,12 @@ export function FormGeneratorProvider({
   optionLoaders = {},
   imperativeOptions = {},
   emitFieldChange = null,
+  disabledFields = [],
   children,
 }) {
   return (
     <FormGeneratorContext.Provider
-      value={{ customComponents, optionLoaders, imperativeOptions, emitFieldChange }}
+      value={{ customComponents, optionLoaders, imperativeOptions, emitFieldChange, disabledFields }}
     >
       {children}
     </FormGeneratorContext.Provider>

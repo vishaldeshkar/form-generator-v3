@@ -4,8 +4,9 @@ import {
   Type, AtSign, AlignLeft, CheckSquare, Circle, ChevronDown as SelectIcon,
   Calendar, Group, Columns,
 } from 'lucide-react';
-import { useFormBuilderContext } from '../../context/FormBuilderContext';
-import { pathsEqual } from '../../hooks/useFormBuilder';
+import { useShallow } from 'zustand/react/shallow';
+import { useFormBuilderStore } from '../../store/FormBuilderStoreContext';
+import { pathsEqual } from '../../store/formBuilderStore';
 import FieldPalette from './FieldPalette';
 
 const TYPE_ICONS = {
@@ -14,13 +15,26 @@ const TYPE_ICONS = {
 };
 
 export default function FieldCard({ component, path }) {
-  const { state, actions } = useFormBuilderContext();
-  const isSelected = pathsEqual(state.selectedComponentPath, path);
+  const selectedComponentPath = useFormBuilderStore((s) => s.selectedComponentPath);
+  const dragState = useFormBuilderStore((s) => s.dragState);
+  const actions = useFormBuilderStore(useShallow((s) => ({
+    selectComponent: s.selectComponent,
+    moveComponentUp: s.moveComponentUp,
+    moveComponentDown: s.moveComponentDown,
+    duplicateComponent: s.duplicateComponent,
+    removeComponent: s.removeComponent,
+    setDragState: s.setDragState,
+    clearDragState: s.clearDragState,
+    moveComponentTo: s.moveComponentTo,
+    addComponent: s.addComponent,
+  })));
+
+  const isSelected = pathsEqual(selectedComponentPath, path);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [showAddField, setShowAddField] = useState(false);
 
-  const isDragging = state.dragState && pathsEqual(state.dragState.draggingPath, path);
-  const isDragOver = state.dragState && pathsEqual(state.dragState.overPath, path);
+  const isDragging = dragState && pathsEqual(dragState.draggingPath, path);
+  const isDragOver = dragState && pathsEqual(dragState.overPath, path);
 
   const handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = 'move';
@@ -31,14 +45,14 @@ export default function FieldCard({ component, path }) {
   const handleDragOver = (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-    if (!state.dragState || pathsEqual(state.dragState.overPath, path)) return;
-    actions.setDragState({ ...state.dragState, overPath: path });
+    if (!dragState || pathsEqual(dragState.overPath, path)) return;
+    actions.setDragState({ ...dragState, overPath: path });
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
-    if (state.dragState) {
-      actions.moveComponentTo(state.dragState.draggingPath, path);
+    if (dragState) {
+      actions.moveComponentTo(dragState.draggingPath, path);
     }
   };
 

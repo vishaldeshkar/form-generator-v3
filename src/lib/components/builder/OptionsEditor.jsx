@@ -1,8 +1,15 @@
 import { ChevronUp, ChevronDown, X, Plus } from 'lucide-react';
-import { useFormBuilderContext } from '../../context/FormBuilderContext';
+import { useShallow } from 'zustand/react/shallow';
+import { useFormBuilderStore } from '../../store/FormBuilderStoreContext';
 
 export default function OptionsEditor({ path, options }) {
-  const { actions } = useFormBuilderContext();
+  const actions = useFormBuilderStore(useShallow((s) => ({
+    addOption: s.addOption,
+    updateOption: s.updateOption,
+    removeOption: s.removeOption,
+    moveOptionUp: s.moveOptionUp,
+    moveOptionDown: s.moveOptionDown,
+  })));
   const items = options || [];
 
   return (

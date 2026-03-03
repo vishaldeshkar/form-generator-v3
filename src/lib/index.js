@@ -6,4 +6,5 @@ export { buildDefaultValues } from './utils/buildDefaultValues';
 export { flattenFields } from './utils/flattenFields';
 export { evaluateCondition, evaluateRule } from './utils/evaluateDependencies';
 export { createEventEmitter } from './utils/createEventEmitter';
-export { useFormBuilder } from './hooks/useFormBuilder';
+export { createFormBuilderStore, resolveComponent, pathsEqual } from './store/formBuilderStore';
+export { FormBuilderStoreProvider, useFormBuilderStore } from './store/FormBuilderStoreContext';

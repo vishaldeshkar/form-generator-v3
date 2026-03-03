@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
-import { useFormBuilderContext } from '../../context/FormBuilderContext';
-import { resolveComponent } from '../../hooks/useFormBuilder';
+import { useFormBuilderStore } from '../../store/FormBuilderStoreContext';
+import { resolveComponent } from '../../store/formBuilderStore';
 import OptionsEditor from './OptionsEditor';
 import DependencyEditor from './DependencyEditor';
 import GroupLayoutEditor from './GroupLayoutEditor';
 import ColumnLayoutEditor from './ColumnLayoutEditor';
 
 function PropertiesTab({ component, path }) {
-  const { actions } = useFormBuilderContext();
+  const updateComponent = useFormBuilderStore((s) => s.updateComponent);
   const isLayout = component.type === 'group' || component.type === 'column';
 
-  const update = (changes) => actions.updateComponent(path, changes);
+  const update = (changes) => updateComponent(path, changes);
 
   return (
     <div className="fbc-properties-tab">
@@ -149,7 +149,7 @@ function PropertiesTab({ component, path }) {
 }
 
 function ValidationTab({ component, path }) {
-  const { actions } = useFormBuilderContext();
+  const updateComponent = useFormBuilderStore((s) => s.updateComponent);
   const validation = component.validation || {};
   const isLayout = component.type === 'group' || component.type === 'column';
 
@@ -164,7 +164,7 @@ function ValidationTab({ component, path }) {
       if (newValidation[k] === '' || newValidation[k] === undefined) delete newValidation[k];
     });
     const hasValues = Object.keys(newValidation).length > 0;
-    actions.updateComponent(path, { validation: hasValues ? newValidation : undefined });
+    updateComponent(path, { validation: hasValues ? newValidation : undefined });
   };
 
   return (
@@ -216,20 +216,21 @@ function ValidationTab({ component, path }) {
 }
 
 export default function FieldEditorPanel() {
-  const { state, actions } = useFormBuilderContext();
-  const { selectedComponentPath } = state;
+  const schema = useFormBuilderStore((s) => s.schema);
+  const selectedComponentPath = useFormBuilderStore((s) => s.selectedComponentPath);
+  const deselectComponent = useFormBuilderStore((s) => s.deselectComponent);
   const [activeTab, setActiveTab] = useState('properties');
 
   if (!selectedComponentPath) return null;
 
-  const component = resolveComponent(state.schema, selectedComponentPath);
+  const component = resolveComponent(schema, selectedComponentPath);
   if (!component) return null;
 
   const isLayout = component.type === 'group' || component.type === 'column';
   const tabs = [
     { id: 'properties', label: 'Properties' },
     { id: 'validation', label: 'Validation' },
-    ...(!isLayout ? [{ id: 'dependencies', label: 'Dependencies' }] : []),
+    ...(component.type !== 'column' ? [{ id: 'dependencies', label: 'Dependencies' }] : []),
   ];
 
   return (
@@ -237,7 +238,7 @@ export default function FieldEditorPanel() {
       <div className="fbc-editor-header">
         <span className="fbc-type-badge fbc-type-badge--large">{component.type}</span>
         <span className="fbc-editor-title">{component.label || component.title || component.name}</span>
-        <button type="button" className="fbc-editor-close" onClick={actions.deselectComponent}><X size={16} /></button>
+        <button type="button" className="fbc-editor-close" onClick={deselectComponent}><X size={16} /></button>
       </div>
 
       <div className="fbc-editor-tabs">

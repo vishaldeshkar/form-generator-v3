@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Eye, Code, Copy, Check } from 'lucide-react';
-import { useFormBuilder } from '../../hooks/useFormBuilder';
-import { FormBuilderProvider } from '../../context/FormBuilderContext';
+import { FormBuilderStoreProvider, useFormBuilderStore } from '../../store/FormBuilderStoreContext';
 import FormBuilder from '../builder/FormBuilder';
 import FormGenerator from '../FormGenerator';
 import '../../styles/formBuilder.css';
@@ -27,9 +26,8 @@ function cleanSchema(schema) {
   }));
 }
 
-export default function FormComposer({ initialSchema, onSchemaChange }) {
-  const builderValue = useFormBuilder(initialSchema);
-  const { state } = builderValue;
+function FormComposerInner({ onSchemaChange }) {
+  const schema = useFormBuilderStore((s) => s.schema);
   const [activeTab, setActiveTab] = useState('preview');
   const [copied, setCopied] = useState(false);
   const [previewKey, setPreviewKey] = useState(0);
@@ -42,81 +40,87 @@ export default function FormComposer({ initialSchema, onSchemaChange }) {
       setPreviewKey((k) => k + 1);
     }, 400);
     return () => clearTimeout(debounceRef.current);
-  }, [state.schema]);
+  }, [schema]);
 
   // Notify parent of schema changes
   useEffect(() => {
-    onSchemaChange?.(state.schema);
-  }, [state.schema, onSchemaChange]);
+    onSchemaChange?.(schema);
+  }, [schema, onSchemaChange]);
 
   const handleCopy = useCallback(() => {
-    const cleaned = cleanSchema(state.schema);
+    const cleaned = cleanSchema(schema);
     navigator.clipboard.writeText(JSON.stringify(cleaned, null, 2)).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     });
-  }, [state.schema]);
+  }, [schema]);
 
-  const hasComponents = state.schema.components.length > 0;
-  const cleaned = cleanSchema(state.schema);
+  const hasComponents = schema.components.length > 0;
+  const cleaned = cleanSchema(schema);
 
   return (
-    <FormBuilderProvider value={builderValue}>
-      <div className="fbc-composer">
-        <div className="fbc-builder-panel">
-          <FormBuilder />
+    <div className="fbc-composer">
+      <div className="fbc-builder-panel">
+        <FormBuilder />
+      </div>
+
+      <div className="fbc-preview-panel">
+        <div className="fbc-preview-tabs">
+          <button
+            type="button"
+            className={`fbc-preview-tab ${activeTab === 'preview' ? 'fbc-preview-tab--active' : ''}`}
+            onClick={() => setActiveTab('preview')}
+          >
+            <Eye size={14} /> Live Preview
+          </button>
+          <button
+            type="button"
+            className={`fbc-preview-tab ${activeTab === 'json' ? 'fbc-preview-tab--active' : ''}`}
+            onClick={() => setActiveTab('json')}
+          >
+            <Code size={14} /> Generated JSON
+          </button>
         </div>
 
-        <div className="fbc-preview-panel">
-          <div className="fbc-preview-tabs">
-            <button
-              type="button"
-              className={`fbc-preview-tab ${activeTab === 'preview' ? 'fbc-preview-tab--active' : ''}`}
-              onClick={() => setActiveTab('preview')}
-            >
-              <Eye size={14} /> Live Preview
-            </button>
-            <button
-              type="button"
-              className={`fbc-preview-tab ${activeTab === 'json' ? 'fbc-preview-tab--active' : ''}`}
-              onClick={() => setActiveTab('json')}
-            >
-              <Code size={14} /> Generated JSON
-            </button>
-          </div>
-
-          <div className="fbc-preview-content">
-            {activeTab === 'preview' && (
-              <div className="fbc-preview-form">
-                {hasComponents ? (
-                  <FormGenerator
-                    key={previewKey}
-                    schema={state.schema}
-                    onSubmit={() => {}}
-                  />
-                ) : (
-                  <div className="fbc-empty-state">
-                    Add fields to see a live preview here.
-                  </div>
-                )}
-              </div>
-            )}
-
-            {activeTab === 'json' && (
-              <div className="fbc-json-view">
-                <div className="fbc-json-toolbar">
-                  <button type="button" className="fbc-copy-btn" onClick={handleCopy}>
-                    {copied ? <><Check size={12} /> Copied!</> : <><Copy size={12} /> Copy JSON</>}
-                  </button>
+        <div className="fbc-preview-content">
+          {activeTab === 'preview' && (
+            <div className="fbc-preview-form">
+              {hasComponents ? (
+                <FormGenerator
+                  key={previewKey}
+                  schema={schema}
+                  onSubmit={() => {}}
+                />
+              ) : (
+                <div className="fbc-empty-state">
+                  Add fields to see a live preview here.
                 </div>
-                <pre className="fbc-json-pre">
-                  <code dangerouslySetInnerHTML={{ __html: highlightJSON(cleaned) }} />
-                </pre>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'json' && (
+            <div className="fbc-json-view">
+              <div className="fbc-json-toolbar">
+                <button type="button" className="fbc-copy-btn" onClick={handleCopy}>
+                  {copied ? <><Check size={12} /> Copied!</> : <><Copy size={12} /> Copy JSON</>}
+                </button>
               </div>
-            )}
-          </div>
+              <pre className="fbc-json-pre">
+                <code dangerouslySetInnerHTML={{ __html: highlightJSON(cleaned) }} />
+              </pre>
+            </div>
+          )}
         </div>
       </div>
-    </FormBuilderProvider>
+    </div>
+  );
+}
+
+export default function FormComposer({ initialSchema, onSchemaChange }) {
+  return (
+    <FormBuilderStoreProvider initialSchema={initialSchema}>
+      <FormComposerInner onSchemaChange={onSchemaChange} />
+    </FormBuilderStoreProvider>
   );
 }

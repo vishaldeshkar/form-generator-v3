@@ -1,4 +1,5 @@
 import { useDependency } from '../hooks/useDependency';
+import { useFormGeneratorContext } from '../context/FormGeneratorContext';
 import TextField from './fields/TextField';
 import TextareaField from './fields/TextareaField';
 import CheckboxField from './fields/CheckboxField';
@@ -20,7 +21,7 @@ const FIELD_COMPONENTS = {
   custom: CustomField,
 };
 
-export default function ComponentRenderer({ component }) {
+export default function ComponentRenderer({ component, visibleGroupIndex }) {
   const isLayoutType = component.type === 'group' || component.type === 'column';
   const fieldName = isLayoutType ? null : component.name;
 
@@ -29,10 +30,13 @@ export default function ComponentRenderer({ component }) {
     component.dependencies
   );
 
+  const { disabledFields } = useFormGeneratorContext();
+  const runtimeDisabled = !isLayoutType && disabledFields.includes(component.name);
+
   if (!isVisible) return null;
 
   if (component.type === 'group') {
-    return <GroupLayout component={component} />;
+    return <GroupLayout component={component} visibleGroupIndex={visibleGroupIndex} />;
   }
 
   if (component.type === 'column') {
@@ -48,7 +52,7 @@ export default function ComponentRenderer({ component }) {
     <FieldComponent
       component={component}
       isRequired={isRequired || component.isRequired}
-      isDisabled={isDisabled || component.isDisabled}
+      isDisabled={isDisabled || component.isDisabled || runtimeDisabled}
     />
   );
 }

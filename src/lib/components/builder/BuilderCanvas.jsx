@@ -1,9 +1,8 @@
-import { useFormBuilderContext } from '../../context/FormBuilderContext';
+import { useFormBuilderStore } from '../../store/FormBuilderStoreContext';
 import FieldCard from './FieldCard';
 
 export default function BuilderCanvas() {
-  const { state } = useFormBuilderContext();
-  const { components } = state.schema;
+  const components = useFormBuilderStore((s) => s.schema.components);
 
   if (components.length === 0) {
     return (

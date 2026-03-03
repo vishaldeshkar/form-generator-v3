@@ -1,10 +1,15 @@
 import { X, Plus } from 'lucide-react';
-import { useFormBuilderContext } from '../../context/FormBuilderContext';
+import { useShallow } from 'zustand/react/shallow';
+import { useFormBuilderStore } from '../../store/FormBuilderStoreContext';
 
 const WIDTH_OPTIONS = [2, 3, 4, 5, 6, 8, 10, 12];
 
 export default function ColumnLayoutEditor({ component, path }) {
-  const { actions } = useFormBuilderContext();
+  const actions = useFormBuilderStore(useShallow((s) => ({
+    addColumn: s.addColumn,
+    removeColumn: s.removeColumn,
+    updateColumnWidth: s.updateColumnWidth,
+  })));
   const columns = component.columns || [];
   const totalWidth = columns.reduce((sum, col) => sum + col.width, 0);
 

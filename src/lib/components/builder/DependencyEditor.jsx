@@ -1,5 +1,5 @@
 import { X, Plus } from 'lucide-react';
-import { useFormBuilderContext } from '../../context/FormBuilderContext';
+import { useFormBuilderStore } from '../../store/FormBuilderStoreContext';
 import { flattenFields } from '../../utils/flattenFields';
 
 const OPERATORS = [
@@ -94,14 +94,15 @@ function ConditionRow({ condition, allFields, fieldOptionsMap, onChange, onRemov
 }
 
 function DependencySection({ depType, rule, component, path, allFields, fieldOptionsMap }) {
-  const { actions } = useFormBuilderContext();
+  const setDependencyRule = useFormBuilderStore((s) => s.setDependencyRule);
+  const removeDependencyRule = useFormBuilderStore((s) => s.removeDependencyRule);
   const isEnabled = !!rule;
 
   const handleToggle = () => {
     if (isEnabled) {
-      actions.removeDependencyRule(path, depType.key);
+      removeDependencyRule(path, depType.key);
     } else {
-      actions.setDependencyRule(path, depType.key, {
+      setDependencyRule(path, depType.key, {
         conditions: [{ field: '', operator: 'equals', value: '' }],
         logic: 'AND',
       });
@@ -111,27 +112,27 @@ function DependencySection({ depType, rule, component, path, allFields, fieldOpt
   const updateCondition = (index, newCondition) => {
     const conditions = [...rule.conditions];
     conditions[index] = newCondition;
-    actions.setDependencyRule(path, depType.key, { ...rule, conditions });
+    setDependencyRule(path, depType.key, { ...rule, conditions });
   };
 
   const removeCondition = (index) => {
     const conditions = rule.conditions.filter((_, i) => i !== index);
     if (conditions.length === 0) {
-      actions.removeDependencyRule(path, depType.key);
+      removeDependencyRule(path, depType.key);
     } else {
-      actions.setDependencyRule(path, depType.key, { ...rule, conditions });
+      setDependencyRule(path, depType.key, { ...rule, conditions });
     }
   };
 
   const addCondition = () => {
-    actions.setDependencyRule(path, depType.key, {
+    setDependencyRule(path, depType.key, {
       ...rule,
       conditions: [...rule.conditions, { field: '', operator: 'equals', value: '' }],
     });
   };
 
   const toggleLogic = () => {
-    actions.setDependencyRule(path, depType.key, {
+    setDependencyRule(path, depType.key, {
       ...rule,
       logic: rule.logic === 'OR' ? 'AND' : 'OR',
     });
@@ -190,11 +191,17 @@ function DependencySection({ depType, rule, component, path, allFields, fieldOpt
 }
 
 export default function DependencyEditor({ component, path }) {
-  const { state } = useFormBuilderContext();
+  const components = useFormBuilderStore((s) => s.schema.components);
   const deps = component.dependencies || {};
+  const isGroup = component.type === 'group';
+
+  // Groups only support visibility dependencies
+  const availableDepTypes = isGroup
+    ? DEP_TYPES.filter((d) => d.key === 'visibility')
+    : DEP_TYPES;
 
   // Get all other fields for the field selector
-  const allLeafFields = flattenFields(state.schema.components)
+  const allLeafFields = flattenFields(components)
     .filter((f) => f.name !== component.name);
 
   // Build options map for fields that have options (radio/select)
@@ -207,7 +214,7 @@ export default function DependencyEditor({ component, path }) {
 
   return (
     <div className="fbc-dependency-editor">
-      {DEP_TYPES.map((depType) => (
+      {availableDepTypes.map((depType) => (
         <DependencySection
           key={depType.key}
           depType={depType}

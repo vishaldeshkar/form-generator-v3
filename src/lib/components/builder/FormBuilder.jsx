@@ -1,25 +1,28 @@
-import { useFormBuilderContext } from '../../context/FormBuilderContext';
+import { useFormBuilderStore } from '../../store/FormBuilderStoreContext';
 import FieldPalette from './FieldPalette';
 import BuilderCanvas from './BuilderCanvas';
 import FieldEditorPanel from './FieldEditorPanel';
 
 function SchemaMetaEditor() {
-  const { state, actions } = useFormBuilderContext();
+  const title = useFormBuilderStore((s) => s.schema.title);
+  const description = useFormBuilderStore((s) => s.schema.description);
+  const setTitle = useFormBuilderStore((s) => s.setTitle);
+  const setDescription = useFormBuilderStore((s) => s.setDescription);
 
   return (
     <div className="fbc-meta-editor">
       <input
         type="text"
         className="fbc-meta-title"
-        value={state.schema.title}
-        onChange={(e) => actions.setTitle(e.target.value)}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         placeholder="Form title"
       />
       <input
         type="text"
         className="fbc-meta-description"
-        value={state.schema.description || ''}
-        onChange={(e) => actions.setDescription(e.target.value)}
+        value={description || ''}
+        onChange={(e) => setDescription(e.target.value)}
         placeholder="Form description (optional)"
       />
     </div>
@@ -27,14 +30,14 @@ function SchemaMetaEditor() {
 }
 
 export default function FormBuilder() {
-  const { state } = useFormBuilderContext();
+  const selectedComponentPath = useFormBuilderStore((s) => s.selectedComponentPath);
 
   return (
     <div className="fbc-builder">
       <SchemaMetaEditor />
       <FieldPalette />
       <BuilderCanvas />
-      {state.selectedComponentPath && <FieldEditorPanel />}
+      {selectedComponentPath && <FieldEditorPanel />}
     </div>
   );
 }

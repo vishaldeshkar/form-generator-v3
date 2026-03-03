@@ -1,5 +1,5 @@
 import { Type, AtSign, AlignLeft, CheckSquare, Circle, ChevronDown, Calendar, Group, Columns } from 'lucide-react';
-import { useFormBuilderContext } from '../../context/FormBuilderContext';
+import { useFormBuilderStore } from '../../store/FormBuilderStoreContext';
 
 const PALETTE_ITEMS = [
   { type: 'text', label: 'Text', Icon: Type },
@@ -14,7 +14,7 @@ const PALETTE_ITEMS = [
 ];
 
 export default function FieldPalette({ parentPath = null }) {
-  const { actions } = useFormBuilderContext();
+  const addComponent = useFormBuilderStore((s) => s.addComponent);
 
   return (
     <div className="fbc-palette">
@@ -25,7 +25,7 @@ export default function FieldPalette({ parentPath = null }) {
             key={item.type}
             type="button"
             className="fbc-palette-btn"
-            onClick={() => actions.addComponent(item.type, parentPath)}
+            onClick={() => addComponent(item.type, parentPath)}
             title={`Add ${item.label}`}
           >
             <item.Icon size={14} className="fbc-palette-icon" />

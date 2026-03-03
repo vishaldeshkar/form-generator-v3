@@ -1,4 +1,4 @@
-import ComponentRenderer from '../ComponentRenderer';
+import ComponentList from '../ComponentList';
 
 export default function ColumnLayout({ component }) {
   const { columns } = component;
@@ -11,9 +11,7 @@ export default function ColumnLayout({ component }) {
           className="fg-column"
           style={{ flex: `0 0 ${(col.width / 12) * 100}%` }}
         >
-          {col.components.map((child) => (
-            <ComponentRenderer key={child.name} component={child} />
-          ))}
+          <ComponentList components={col.components} />
         </div>
       ))}
     </div>

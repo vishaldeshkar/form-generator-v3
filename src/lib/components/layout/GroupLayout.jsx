@@ -1,15 +1,20 @@
-import ComponentRenderer from '../ComponentRenderer';
+import ComponentList from '../ComponentList';
 
-export default function GroupLayout({ component }) {
-  const { title, description, components } = component;
+export default function GroupLayout({ component, visibleGroupIndex }) {
+  const { title, titleTemplate, description, components } = component;
+
+  let displayTitle = title;
+  if (titleTemplate) {
+    displayTitle = visibleGroupIndex != null
+      ? titleTemplate.replace(/\{n\}/g, String(visibleGroupIndex))
+      : titleTemplate.replace(/\{n\}/g, '');
+  }
 
   return (
     <fieldset className="fg-group">
-      {title && <legend className="fg-group-title">{title}</legend>}
+      {displayTitle && <legend className="fg-group-title">{displayTitle}</legend>}
       {description && <p className="fg-group-description">{description}</p>}
-      {components.map((child) => (
-        <ComponentRenderer key={child.name} component={child} />
-      ))}
+      <ComponentList components={components} />
     </fieldset>
   );
 }

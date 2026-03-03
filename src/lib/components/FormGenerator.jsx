@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormGeneratorProvider } from '../context/FormGeneratorContext';
 import { buildYupSchema } from '../utils/buildYupSchema';
 import { createEventEmitter } from '../utils/createEventEmitter';
-import ComponentRenderer from './ComponentRenderer';
+import ComponentList from './ComponentList';
 import '../styles/formGenerator.css';
 
 function FormFields({ schema }) {
@@ -14,9 +14,7 @@ function FormFields({ schema }) {
       {schema.description && (
         <p className="fg-description">{schema.description}</p>
       )}
-      {schema.components.map((component) => (
-        <ComponentRenderer key={component.name} component={component} />
-      ))}
+      <ComponentList components={schema.components} />
     </>
   );
 }
@@ -29,6 +27,7 @@ const FormGenerator = forwardRef(function FormGenerator(
     customValidation = {},
     defaultValues = {},
     optionLoaders = {},
+    disabledFields = [],
   },
   ref
 ) {
@@ -89,6 +88,7 @@ const FormGenerator = forwardRef(function FormGenerator(
     optionLoaders,
     imperativeOptions,
     emitFieldChange,
+    disabledFields,
   };
 
   if (isControlled) {
